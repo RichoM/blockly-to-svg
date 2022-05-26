@@ -11,7 +11,7 @@ function svg(){
     var content = new XMLSerializer().serializeToString(canvas);
 
     xml = '<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="'
-        + bbox.width + '" height="' + bbox.height + '" viewBox=" ' + bbox.x + ' ' + bbox.y + ' ' + bbox.width + ' ' + bbox.height + '">' +
+        + bbox.width*2 + '" height="' + bbox.height*2 + '" viewBox=" ' + bbox.x + ' ' + bbox.y + ' ' + bbox.width + ' ' + bbox.height + '">' +
         css + '">' + content + '</svg>';    
 
     return new Blob([xml], { type: 'image/svg+xml;base64' });
@@ -31,15 +31,15 @@ function exportSVG() {
 
 function exportPNG(){
     var img = new Image();
-    img.onload = function() {
+    img.onload = function(e) {
         var canvas = document.createElement('canvas');
-        canvas.width = 800;
-        canvas.height = 600;
+        canvas.width = e.target.width;
+        canvas.height = e.target.height;
         canvas.getContext("2d").drawImage(img, 0, 0);
         download(canvas.toDataURL("image/png"),'blocks.png');
     };
     img.src = DOMURL.createObjectURL(svg());
 }
 
-exportSVG()
-//exportPNG()
+//exportSVG()
+exportPNG()
